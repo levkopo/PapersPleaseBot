@@ -17,8 +17,7 @@ class PaperPlease implements Bot
     }
 
     public function onNewMessage($data, $client_info){
-        $peer_id = $data->peer_id;
-        $this->func->sendMessage($peer_id, "Привет!");
+        $this->func->sendMessage($data->peer_id, "Hello World!");
     }
 
 
