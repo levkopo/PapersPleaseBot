@@ -18,8 +18,7 @@ class PaperPlease implements Bot
 
     public function onNewMessage($data, $client_info){
         if(strcasecmp($data->text, "паспорт")){
-            $this->func->sendMessage($data->peer_id, "---Паспорт---\n
-            PS-ID:" (string)rand(0, 10) . (string)rand(10, 40) . (string)rand(100000, 999999));
+            $this->func->sendMessage($data->peer_id, "---Паспорт---\n PS-ID:".rand(0, 10) .rand(10, 40).rand(100000, 999999));
         }
     }
 
