@@ -37,7 +37,7 @@
       <updated>1588090889835</updated>
       <workItem from="1588090891566" duration="1425000" />
       <workItem from="1588139697808" duration="88000" />
-      <workItem from="1588140583709" duration="1316000" />
+      <workItem from="1588140583709" duration="4519000" />
     </task>
     <servers />
   </component>
@@ -55,5 +55,11 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="802" y="443" key="NewPhpFileDialog" timestamp="1588145752625">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="802" y="443" key="NewPhpFileDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588145752625" />
   </component>
 </project>
