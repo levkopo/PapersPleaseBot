@@ -17,9 +17,10 @@ class PaperPlease implements Bot
     }
 
     public function onNewMessage($data, $client_info){
-        if($data->text == "паспорт"){
+        $words = explode(' ', $data->text);
+        if($words[0] == "паспорт"){
             $country = array("Российская Федерация", "Украина", "Беларусь", "Казахстан", "Польша", "Литва", "Латвия", "Эстония", "Болгария");
-            $country = $country[rand(0,sizeof($country-1))];
+            $country = $country[rand(0,sizeof($country)-1)];
 
             if(rand(0,100) <= 50){
                 $sex = "Мужской";
