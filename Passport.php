@@ -8,12 +8,8 @@ class Passport
     public $country;
     public $city;
 
-    private $passports;
-
     public function __construct(){
-        $this->passports = json_decode(file_get_contents(__DIR__."/data/passports.json"));
-
-        $this->ps_id = rand(12, 99)." ". rand(12, 99)." ".rand(123456, 999999);
+        $this->ps_id = rand(10, 99)." ". rand(10, 99)." ".rand(10000, 999999);
         $country = array("Российская Федерация", "Украина", "Беларусь", "Казахстан", "Польша", "Литва", "Латвия", "Эстония", "Болгария");
         $country_index = rand(0,sizeof($country) - 1);
         $this->country = $country[$country_index];
@@ -25,8 +21,13 @@ class Passport
         }
     }
     public function savePassport($user_id){
+        $passports = json_decode(file_get_contents(__DIR__."/data/passports.json"));
+        if(!isset($passports->data)){
+            $passports->data = array();
+        }
 
-        $this->passports->passports->{$user_id} = array(
+        $passports->data[] = array(
+            'user_id'=>$user_id,
             'ps_id'=>$this->ps_id,
             'sex'=>$this->sex,
             'male'=>$this->male,
@@ -34,20 +35,22 @@ class Passport
             'city'=>$this->city,
         );
 
-        file_put_contents(__DIR__."/data/passports.json", json_encode($this->passports));
+        file_put_contents(__DIR__."/data/passports.json", json_encode($passports));
     }
 
     public function getPassportByUserId($user_id){
-        if(!isset($this->passports->passports->{$user_id}))
-            return new Passport();
+        $passports = json_decode(file_get_contents(__DIR__."/data/passports.json"));
+        foreach ($passports->data as $passport){
+            if($passport->user_id==$user_id){
+                $this->ps_id = $passport->ps_id;
+                $this->sex = $passport->sex;
+                $this->male = $passport->male;
+                $this->country = $passport->country;
+                $this->city = $passport->city;
+                return $this;
+            }
+        }
 
-        $passport = $this->passports->passports->{$user_id};
-        $this->ps_id = $passport->ps_id;
-        $this->sex = $passport->sex;
-        $this->male = $passport->male;
-        $this->country = $passport->country;
-        $this->city = $passport->city;
-
-        return $this;
+        return new Passport();
     }
 }
