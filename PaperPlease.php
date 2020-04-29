@@ -21,11 +21,16 @@ class PaperPlease implements Bot
         $words = explode(' ', $data->text);
         if($words[0] == "паспорт") {
             $passport = new Passport();
+            if(!$passport->getPassportByUserId($data->from_id)){
+                $this->func->sendMessage($data->peer_id, "Паспорт уже есть!", null);
+                return;
+            }
             $passport->savePassport($data->from_id);
 
             $passport_name = __DIR__ . '/images/tmp' . rand(0, 1000) . '.png';
             $tmp_params = http_build_query(array(
-                'male'=>$passport->male,
+                'country_index'=>$passport->country_index,
+                'sex_id'=>$passport->sex_id,
                 'passport_id'=>$passport->ps_id,
             ));
             $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?'.$tmp_params);
@@ -35,7 +40,10 @@ class PaperPlease implements Bot
             $attachment = "photo" . $attachment_->owner_id . "_" . $attachment_->id;
             unlink($passport_name);
 
-            $this->func->sendMessage($data->peer_id, "Данные верны?", $attachment);
+            $this->func->sendMessage($data->peer_id, "", $attachment);
+        }
+        if($words[0] == "удалить"){
+            Passport::deletePassport($data->from_id);
         }
     }
     public function call($type, $data){}

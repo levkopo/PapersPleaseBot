@@ -3,9 +3,8 @@
 class Passport
 {
     public $ps_id;
-    public $sex;
-    public $male = false;
-    public $country;
+    public $sex,  $sex_id;
+    public $country, $country_index;
     public $city;
 
     public function __construct(){
@@ -15,9 +14,10 @@ class Passport
         $this->country = $country[$country_index];
         if(rand(0,100) <= 50){
             $this->sex = "Мужской";
-            $this->male = true;
+            $this->sex_id = 1;
         }else{
             $this->sex = "Женский";
+            $this->sex_id = 0;
         }
     }
     public function savePassport($user_id){
@@ -29,28 +29,29 @@ class Passport
         $passports->data[] = array(
             'user_id'=>$user_id,
             'ps_id'=>$this->ps_id,
-            'sex'=>$this->sex,
-            'male'=>$this->male,
-            'country'=>$this->country,
+            'sex_id'=>$this->sex_id,
+            'country_index'=>$this->country_index,
             'city'=>$this->city,
         );
 
         file_put_contents(__DIR__."/data/passports.json", json_encode($passports));
     }
-
+    public static function deletePassport($user_id){
+        $passports = json_decode(file_get_contents(__DIR__."/data/passports.json"));
+        unset($passports[$user_id]);
+        file_put_contents(__DIR__."/data/passports.json", json_encode($passports));
+    }
     public function getPassportByUserId($user_id){
         $passports = json_decode(file_get_contents(__DIR__."/data/passports.json"));
         foreach ($passports->data as $passport){
             if($passport->user_id==$user_id){
                 $this->ps_id = $passport->ps_id;
-                $this->sex = $passport->sex;
-                $this->male = $passport->male;
-                $this->country = $passport->country;
+                $this->sex_id = $passport->sex_id;
+                $this->country_index = $passport->country_index;
                 $this->city = $passport->city;
                 return $this;
             }
         }
-
-        return new Passport();
+        return false;
     }
 }
