@@ -17,8 +17,41 @@ class PaperPlease implements Bot
     }
 
     public function onNewMessage($data, $client_info){
-        if(strcasecmp($data->text, "паспорт")){
-            $this->func->sendMessage($data->peer_id, "---Паспорт---\n PS-ID:".rand(0, 10) .rand(10, 40).rand(100000, 999999));
+        if($data->text == "паспорт"){
+            switch(rand(0,8)){
+                case 0:
+                    $country = "Российская Федерация";
+                    break;
+                case 1:
+                    $country = "Украина";
+                    break;
+                case 2:
+                    $country = "Беларусь";
+                    break;
+                case 3:
+                    $country = "Казахстан";
+                    break;
+                case 4:
+                    $country = "Польша";
+                    break;
+                case 5:
+                    $country = "Литва";
+                    break;
+                case 6:
+                    $country = "Латвия";
+                    break;
+                case 7:
+                    $country = "Эстония";
+                    break;
+                case 8:
+                    $country = "Болгария";
+                    break;
+            }
+            if(rand(0,100) <= 50){
+                $sex = "Мужской";
+            }else $sex = "Женский";
+            $this->func->sendMessage($data->peer_id, "---Паспорт---\n 
+            PS-ID:".rand(0, 10) . " " . rand(10, 40). " " .rand(100000, 999999) . "\nПол: $sex\nСтарана: $country");
         }
     }
 
