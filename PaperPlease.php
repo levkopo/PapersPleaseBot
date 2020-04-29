@@ -19,15 +19,9 @@ class PaperPlease implements Bot
     public function onNewMessage($data, $client_info){
         $words = explode(' ', $data->text);
         if($words[0] == "паспорт"){
-            $country = array("Российская Федерация", "Украина", "Беларусь", "Казахстан", "Польша", "Литва", "Латвия", "Эстония", "Болгария");
-            $country = $country[rand(0,sizeof($country)-1)];
-
-            $male = false;
-            if(rand(0,100) <= 50){
-                $male = true;
-            }
-
-            $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$male);
+            $passport = new Passport();
+            $passport->generate();
+            $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$passport->sex);
             file_put_contents(__DIR__.'/images/tmp.png', $tmp_image);
 
             $attachment_ = $this->func->uploadPhoto($data->peer_id, __DIR__.'/images/tmp.png')->response[0];
@@ -36,7 +30,7 @@ class PaperPlease implements Bot
             }
 
             $passport_name = __DIR__.'/images/tmp'.rand(0, 1000).'.png';
-            $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$male);
+            $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$passport->sex);
             file_put_contents($passport_name, $tmp_image);
 
             $attachment_ = $this->func->uploadPhoto($data->peer_id, $passport_name)->response[0];
@@ -44,10 +38,7 @@ class PaperPlease implements Bot
             unlink($passport_name);
 
             $this->func->sendMessage($data->peer_id, "", $attachment);
-        }
     }
-
-
     public function call($type, $data){}
 
     public function VKApp_call($data){}
