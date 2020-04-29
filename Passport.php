@@ -16,6 +16,6 @@ public class Passport
         }
     }
     public function getPassportByUserId($user_id){
-        
+
     }
 }

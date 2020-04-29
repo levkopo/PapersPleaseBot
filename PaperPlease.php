@@ -17,15 +17,23 @@ class PaperPlease implements Bot
     }
 
     public function onNewMessage($data, $client_info){
-        if($data->text == "паспорт"){
+        $words = explode(' ', $data->text);
+        if($words[0] == "паспорт"){
             $country = array("Российская Федерация", "Украина", "Беларусь", "Казахстан", "Польша", "Литва", "Латвия", "Эстония", "Болгария");
-            $country = $country[rand(0,sizeof($country-1))];
+            $country = $country[rand(0,sizeof($country)-1)];
 
+            $male = false;
             if(rand(0,100) <= 50){
-                $sex = "Мужской";
-            }else $sex = "Женский";
-            $this->func->sendMessage($data->peer_id, "---Паспорт---\n 
-            PS-ID:".rand(0, 10) . " " . rand(10, 40). " " .rand(100000, 999999) . "\nПол: $sex\nСтарана: $country");
+                $male = true;
+            }
+
+            $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$male);
+            file_put_contents(__DIR__.'/images/tmp.png', $tmp_image);
+
+            $attachment_ = $this->func->uploadPhoto($data->peer_id, __DIR__.'/images/tmp.png')->response[0];
+            $attachment = "photo".$attachment_->owner_id."_".$attachment_->id;
+
+            $this->func->sendMessage($data->peer_id, "", $attachment);
         }
     }
 
