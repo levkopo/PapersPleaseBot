@@ -18,35 +18,9 @@ class PaperPlease implements Bot
 
     public function onNewMessage($data, $client_info){
         if($data->text == "паспорт"){
-            switch(rand(0,8)){
-                case 0:
-                    $country = "Российская Федерация";
-                    break;
-                case 1:
-                    $country = "Украина";
-                    break;
-                case 2:
-                    $country = "Беларусь";
-                    break;
-                case 3:
-                    $country = "Казахстан";
-                    break;
-                case 4:
-                    $country = "Польша";
-                    break;
-                case 5:
-                    $country = "Литва";
-                    break;
-                case 6:
-                    $country = "Латвия";
-                    break;
-                case 7:
-                    $country = "Эстония";
-                    break;
-                case 8:
-                    $country = "Болгария";
-                    break;
-            }
+            $country = array("Российская Федерация", "Украина", "Беларусь", "Казахстан", "Польша", "Литва", "Латвия", "Эстония", "Болгария");
+            $country = $country[rand(0,sizeof($country-1))];
+
             if(rand(0,100) <= 50){
                 $sex = "Мужской";
             }else $sex = "Женский";
