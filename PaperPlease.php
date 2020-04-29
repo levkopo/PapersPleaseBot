@@ -27,11 +27,13 @@ class PaperPlease implements Bot
                  $male = true;
             }
 
+            $passport_name = __DIR__.'/images/tmp'.rand(0, 1000).'.png';
             $tmp_image = file_get_contents('https://levkopo.fvds.ru/nBotM/bots/194781513/images/paper_image.php?male='.$male);
-            file_put_contents(__DIR__.'/images/tmp.png', $tmp_image);
+            file_put_contents($passport_name, $tmp_image);
 
-            $attachment_ = $this->func->uploadPhoto($data->peer_id, __DIR__.'/images/tmp.png')->response[0];
+            $attachment_ = $this->func->uploadPhoto($data->peer_id, $passport_name)->response[0];
             $attachment = "photo".$attachment_->owner_id."_".$attachment_->id;
+            unlink($passport_name);
 
             $this->func->sendMessage($data->peer_id, "", $attachment);
         }
